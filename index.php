@@ -29,8 +29,6 @@ if (isset($path['2'])){
 
 $metodo = $_SERVER['REQUEST_METHOD'];
 
-//var_dump($metodo);
-
 include_once "classes/db.class.php";
 include_once "clientes/clientes.php";
 
