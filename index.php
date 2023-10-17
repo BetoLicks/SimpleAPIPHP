@@ -1,12 +1,8 @@
 <?php
-//require('funcoes.php');
-//retornaHeader('');
-
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");   
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 date_default_timezone_set("America/Sao_Paulo");
-
 
 if (isset($_GET['path'])){
    $path = explode('/',$_GET['path']);
