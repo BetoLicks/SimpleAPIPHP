@@ -4,10 +4,10 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");   
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-date_default_timezone_set("America/Sao_Paulo");
 
 //-> INCLUSÃO DE CLIENTE...
 if (($acao == 'inclui') && ($param == '')){
+   $db  = DB::conexaoDB();
    $sql = "INSERT INTO tab_clientes (";        
    
    //-> CAMPOS...
@@ -34,7 +34,6 @@ if (($acao == 'inclui') && ($param == '')){
    }
 
    $sql .= ")";         
-   $act = 'insertOne';
 
    $retorno = $db->prepare($sql);
    $insert  = $retorno->execute();

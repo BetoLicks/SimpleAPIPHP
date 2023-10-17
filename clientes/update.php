@@ -4,38 +4,35 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");   
 header("Access-Control-Allow-Methods: PUT");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-date_default_timezone_set("America/Sao_Paulo");
 
 //-> ALTERAÇÃO DE CLIENTE...
 if (($acao == 'alterar') && ($param != '')){
-   $sql = "UPDATE tab_clientes SET ";        
+   $db  = DB::conexaoDB();
+
+   try {      
+      $sql = "UPDATE tab_clientes SET ";        
+      //-> ELIMINANdo O PRIMEIRO ITEM DO ARRAY...
+      array_shift($_POST);
+      //-> CAMPOS...
+      $cnt = 1;
+      foreach (array_keys($_POST) as $campo){
+         if (count($_POST) > $cnt){
+            $sql .= "{$campo} = '{$_POST[$campo]}',";
+         } else {
+            $sql .= "{$campo} = '{$_POST[$campo]}' ";
+         }
+         $cnt++;
+      }      
    
-   //-> CAMPOS...
-   $cnt = 1;
-   foreach (array_keys($_POST) as $campo){
-      if (count($_POST) > $cnt){
-         $sql .= "{$campo} = '{$POST[$campo]}',";
-      } else {
-         $sql .= "{$campo} = '{$POST[$campo]}' ";
-      }
-      $cnt++;
-   }      
-
-   $sql .= " WHERE cli_codigo={$param}";     
-   var_dump($sql);
-
-   $retorno = $db->prepare($sql);
-   $insert  = $retorno->execute();
-
-   if ($insert){
-       echo json_encode(["AVISO"=>'Cliente cadastrado com sucesso.']);
-   } else {
-       echo json_encode(["ERRO"=>'Erro na execução da a do cliente']);
-   }                     
+      $sql .= " WHERE cli_codigo={$param}";        
+      $retorno = $db->prepare($sql);
+      $update  = $retorno->execute();
+   
+      if ($update){
+         echo json_encode(["AVISO"=>'Dados do cliente alterados com sucesso.']);
+      }    
+   } catch(Exception $erro) {
+      echo json_encode(["ERRO"=>'Erro ao executar a alteração dos dados do cliente: '.$erro->getMessage()]);
+   }         
 }
-
-
-
-
-      
 ?>
